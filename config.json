@@ -1,0 +1,15 @@
+{
+    "Probabilidades": {
+        "eliminar_package": 20,
+        "duplicar_package": 20,
+        "atrasar_package": 20
+    },
+
+    "Tempo": {
+        "delay": 80
+    },
+
+    "Timeout": {
+        "sender": 10
+    }
+}

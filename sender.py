@@ -2,12 +2,15 @@ import socket
 import time
 import _thread
 import segmentoConfiavel 
+from segmentoConfiavel import Canal
 
 host = 'localhost'
 portaServidor = 9000
 portaCliente = 8000
 
-TIMEOUT = 10
+TIMEOUT = segmentoConfiavel.prop_timeout_sender
+
+canal = Canal()
 
 class Sender():
     def __init__(self, receiver_address, window_size):
@@ -24,19 +27,21 @@ class Sender():
         self.servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.servidor_socket.bind(("0.0.0.0", portaCliente))
 
-    def sendMensage(self, mensagem):
+    def sendPackage(self, package):
         '''Envia o pacote para o servidor'''
-        self.servidor_socket.sendto(mensagem, self.receiver_address)
+        #self.servidor_socket.sendto(package, self.receiver_address)
+        canal.sendPackage(self.servidor_socket, self.receiver_address, package)
 
     # Receive thread
-    def receive(self,sock):
+    def receive(self, socket):
         '''Recebe os ACK's dos pacotes enviados'''
         while True:
             pack, endereco_receiver = self.servidor_socket.recvfrom(1024)
             ack, package = segmentoConfiavel.extract(pack)
-            print(f"{sender.receiver_address} - ACk recebido {ack}")
+            
+            print(f"{sender.receiver_address} - Mensagem id {ack} recebido pelo receiver")
             if (ack >= self.base):
-                self.base = ack
+                self.base = ack + 1
 
 mensagem = input("Mensagem que vai ser enviada: ")
 quantidade = int(input("Quantidade de vezes: "))
@@ -55,7 +60,7 @@ while sender.base < len(sender.buffer):
     # Envia os pacotes da janela
     while sender.next_seq_num < sender.base + sender.window_size and sender.next_seq_num < len(sender.buffer):
         print(f'{sender.receiver_address} - Enviando o pacote', sender.next_seq_num)
-        sender.sendMensage(sender.buffer[sender.next_seq_num])
+        sender.sendPackage(sender.buffer[sender.next_seq_num])
         sender.next_seq_num += 1
 
     # Inicia o time para timeout
@@ -66,9 +71,9 @@ while sender.base < len(sender.buffer):
     # verifica se ocorreu timeout para reenviar os pacotes da janela atual
     if time.time() - duration > TIMEOUT:
         print(10 * "--" + " Timeout " + 10 * "--")
-        print(f"Reenviando os pacotes da janela {sender.base} Até {sender.base + sender.window_size - 1}")
+        print(f"Reenviando os pacotes da janela {sender.base} até {sender.base + sender.window_size - 1}")
         print(15 * "----")
         sender.running = False
         sender.next_seq_num = sender.base
 
-    time.sleep(5)
+canal.ImprimirErros()
