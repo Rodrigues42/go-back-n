@@ -2,7 +2,7 @@ import socket
 import segmentoConfiavel
 from segmentoConfiavel import Canal
 
-host = 'localhost'
+host = ''
 portaServidor = 9000
 
 expected_seq_num = 0
@@ -19,7 +19,7 @@ servidor_socket.settimeout(20)
 while True:
 
     try:
-        print("Aguardando packages")
+        print(f"Aguardando packages")
         pack, endereco_sender = servidor_socket.recvfrom(1024)
 
         seq_num, data = segmentoConfiavel.extract(pack)
