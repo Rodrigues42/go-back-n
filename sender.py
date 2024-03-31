@@ -43,6 +43,13 @@ class Sender():
             if (ack >= self.base):
                 self.base = ack + 1
 
+ip = input("Qual é o host do servidor? ")
+if ip == "" or ip.lower() == "localhost":
+    host = "localhost"
+else:
+    host = ip
+portaServidor = int(input("Qual é porta do servidor? "))
+
 mensagem = input("Mensagem que vai ser enviada: ")
 quantidade = int(input("Quantidade de vezes: "))
 

@@ -5,14 +5,16 @@ from segmentoConfiavel import Canal
 host = 'localhost'
 portaServidor = 9000
 
-servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-servidor_socket.bind((host, portaServidor))
-servidor_socket.settimeout(20)
-
 expected_seq_num = 0
 MensagemFinal = b""
 
 canal = Canal()
+
+portaServidor = int(input("Qual é a porta: "))
+
+servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+servidor_socket.bind((host, portaServidor))
+servidor_socket.settimeout(20)
 
 while True:
 
