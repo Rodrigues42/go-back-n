@@ -1,7 +1,7 @@
 {
     "Probabilidades": {
-        "eliminar_package": 20,
-        "duplicar_package": 20,
+        "eliminar_package": 4,
+        "duplicar_package": 3,
         "atrasar_package": 20
     },
 
@@ -10,6 +10,6 @@
     },
 
     "Timeout": {
-        "sender": 10
+        "sender": 5
     }
 }

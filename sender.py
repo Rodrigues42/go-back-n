@@ -8,6 +8,8 @@ host = 'localhost'
 portaServidor = 9000
 portaCliente = 8000
 
+janela = 10
+
 TIMEOUT = segmentoConfiavel.prop_timeout_sender
 
 canal = Canal()
@@ -39,21 +41,32 @@ class Sender():
             pack, endereco_receiver = self.servidor_socket.recvfrom(1024)
             ack, package = segmentoConfiavel.extract(pack)
             
-            print(f"{sender.receiver_address} - Mensagem id {ack} recebido pelo receiver")
+            print(f"\033[92m{sender.receiver_address} - Mensagem id {ack} recebido pelo receiver\033[0m")
             if (ack >= self.base):
                 self.base = ack + 1
 
-ip = input("Qual é o host do servidor? ")
+portaCli = input("Qual é a porta que o cliente vai usar (default 8000) ? ")
+if portaCli == "":
+    portaCliente = 8000
+else:
+    portaCliente = int(portaCli)
+
+ip = input("Qual é o host do servidor (default localhost)? ")
 if ip == "" or ip.lower() == "localhost":
     host = "localhost"
 else:
     host = ip
-portaServidor = int(input("Qual é porta do servidor? "))
+
+portaSer = input("Qual é porta do servidor (default 9000)? ")
+if portaSer == "":
+    portaServidor = 9000
+else:
+    portaServidor = int(portaSer)
 
 mensagem = input("Mensagem que vai ser enviada: ")
 quantidade = int(input("Quantidade de vezes: "))
 
-sender = Sender((host, portaServidor), 2)
+sender = Sender((host, portaServidor), janela)
 sender.start()
 
 for i in range(quantidade):
@@ -77,8 +90,8 @@ while sender.base < len(sender.buffer):
     
     # verifica se ocorreu timeout para reenviar os pacotes da janela atual
     if time.time() - duration > TIMEOUT:
-        print(10 * "--" + " Timeout " + 10 * "--")
-        print(f"Reenviando os pacotes da janela {sender.base} até {sender.base + sender.window_size - 1}")
+        print(10 * "--" + "\033[91m Timeout \033[0m" + 10 * "--")
+        print(f"\033[91mReenviando os pacotes da janela {sender.base} até {sender.base + sender.window_size}\033[0m")
         print(15 * "----")
         sender.running = False
         sender.next_seq_num = sender.base
