@@ -10,7 +10,11 @@ MensagemFinal = b""
 
 canal = Canal()
 
-portaServidor = int(input("Qual é a porta: "))
+portaSer = input("Qual é porta do servidor (default 9000)? ")
+if portaSer == "":
+    portaServidor = 9000
+else:
+    portaServidor = int(portaSer)
 
 servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 servidor_socket.bind((host, portaServidor))

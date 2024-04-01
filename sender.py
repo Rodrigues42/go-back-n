@@ -91,7 +91,7 @@ while sender.base < len(sender.buffer):
     # verifica se ocorreu timeout para reenviar os pacotes da janela atual
     if time.time() - duration > TIMEOUT:
         print(10 * "--" + "\033[91m Timeout \033[0m" + 10 * "--")
-        print(f"\033[91mReenviando os pacotes da janela {sender.base} até {sender.base + sender.window_size}\033[0m")
+        print(f"\033[91mReenviando os pacotes da janela {sender.base} até {quantidade if sender.base + sender.window_size > quantidade else sender.base + sender.window_size}\033[0m")
         print(15 * "----")
         sender.running = False
         sender.next_seq_num = sender.base
