@@ -1,8 +1,8 @@
 {
     "Probabilidades": {
-        "eliminar_package": 4,
-        "duplicar_package": 3,
-        "atrasar_package": 20
+        "eliminar_package": 2,
+        "duplicar_package": 5,
+        "atrasar_package": 10
     },
 
     "Tempo": {
@@ -10,6 +10,6 @@
     },
 
     "Timeout": {
-        "sender": 5
+        "sender": 3
     }
 }
